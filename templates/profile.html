@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block page %}
+
+    <div class="jumbotron text-center">
+        <div class="profile__img__nick">
+            <h1>
+                <b>{{ profile.user.username }}</b>
+            </h1>
+            <img src="{% if profile.avatar %} {{ profile.avatar.url }} {% else %} {% static 'img/avatar.png' %} {% endif %}"
+                 class="img-circle" height="20%" width="20%">&nbsp
+        </div>
+
+        <p>{{ profile.slogan }}</p>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3 class="text-uppercase"><b>Інформація о {{ profile.user.username }}</b></h3>
+            <hr/>
+            <p>{{ profile.about|safe }}</p>
+        </div>
+    </div>
+
+    {% if request.user == profile.user %}
+        <a href="{% url 'profile-edit' %}" class="btn btn-success text-uppercase" style="padding:10px;">Редагувати</a>
+    {% endif %}
+
+    <h3 class="text-uppercase" style="margin-top: 50px"><b>Статті {{ profile.user.username }}</b></h3>
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <div class="thumbnail">
+                    <a href="{% url 'article-detail' article.id %}"><img src="/media/{{ article.photo }}" alt=""
+                                                                         style="height: 135px;width: 235px"></a>
+                    <div class="caption">
+                        <p><a href="{% url 'article-detail' article.id %}">{{ article.title }}</a></p>
+                        <p>
+                    <span>by
+                        <a href="{% url 'profile' article.user.username %}">{{ article.user.username }}</a>
+                    </span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

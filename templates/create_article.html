@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% block page %}
+    {% if error %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>Warning!</strong>{{ error }}
+        </div>
+    {% endif %}
+    <div class="panel-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ article_form.media }}
+            {% bootstrap_field article_form.title %}
+            {% bootstrap_field article_form.category %}
+            <label class="control-label">Опис статті</label>
+            <br>
+            <div class="editor__description">{{ article_form.description }}</div>
+            {% bootstrap_field article_form.status %}
+            {% bootstrap_field article_form.photo %}
+            <button class="btn btn-success" type="submit">Створити</button>
+        </form>
+    </div>
+
+{% endblock %}

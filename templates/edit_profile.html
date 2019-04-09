@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+
+{% block page %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ profile_form.media }}
+                {% bootstrap_field profile_form.slogan %}
+                {% bootstrap_field profile_form.avatar %}
+                {% bootstrap_field profile_form.about %}
+                <button class="btn btn-success" type="submit">Обновити</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

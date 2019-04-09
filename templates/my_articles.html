@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block page %}
+    <h1 style="margin-bottom: 30px">Мої статті</h1>
+    <div class="panel panel-default">
+        <table class="table table-bordered table-striped">
+            <thead class="bg-primary">
+            <tr>
+                <th>№</th>
+                <th>Заголовок статті</th>
+                <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'edit-article' article.id %}">{{ article.title }}</a></td>
+                    <td>{% if article.status %}
+                        Відображено
+                    {% else %}
+                        Перевіряється модератором
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

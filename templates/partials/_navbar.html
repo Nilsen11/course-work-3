@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<nav class="navbar navbar-default">
+    <div class="navbar" style="background-color:#79adea;">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/"><img class="img-circle" src="{% static 'img/logo.jpg' %}" alt=""
+                                                      height="40px"></a>
+            </div>
+            <form class="navbar-form navbar-left" role="search" method="get" action="/search/">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Знайти статтю" name="title">
+                        <span class="input-group-btn">
+                                <button class="btn btn-primary">Знайти</button>
+                        </span>
+                    </div>
+
+                </div>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user and not user.is_anonymous %}
+                    <li class="dropdown black">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <img src="{% if user.profile %} {{ user.profile.avatar.url }} {% else %} {% static 'img/avatar.png' %} {% endif %}"
+                                 class="img-avatar img-circle" height="22" width="22">&nbsp;
+                            {{ user.get_full_name|default:user.username }}
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu black">
+                            <li><a href="{% url 'create-article' %}">Створити статтю</a></li>
+                            <li><a href="{% url 'my-articles' %}">Мої статті</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'profile' user.username %}">Мій профіль</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{% url 'auth:logout' %}?next={{ request.path }}">Вийти</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Увійти</a>
+                    </li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div id="category">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li><a href="/category/Mathematics">Математика</a></li>
+                <li><a href="/category/Programming">Програмування</a></li>
+                <li><a href="/category/Informatics">Інформатика</a></li>
+                <li><a href="/category/Physics">Фізика</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+

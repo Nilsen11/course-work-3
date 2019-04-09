@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $('#send').submit(function (e) {
+                e.preventDefault();
+                axios.post($(this).attr('action'), {
+
+                    'message_content': $('#message_content').val(),
+
+                    headers: {
+                        "content-type": "application/json"
+                    }
+                }).then(function (response) {
+                    location.reload();
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            });
+        });
+    </script>
+{% endblock %}
+{% block page %}
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>{{ article.title }}</h3>
+                    <hr/>
+                    <img src="{{ article.photo.url }}" alt="" class="img-responsive center-block"
+                    >
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Опис статті</h4>
+                </div>
+                <div class="panel-body" style="word-wrap:break-word;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="container__article">
+                                {{ article.description|safe }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Коментарі</h4>
+                    {% if show_post_review %}
+                        <form method="post" id="send" action="{% url 'article-detail' article.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea class="form-control" id="message_content"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Відправити</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+                <ul class="list-group">
+                    {% for review in reviews %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-3">
+                                    <img src="{% if review.user.profile %} {{ review.user.profile.avatar.url }} {% else %} {% static 'img/avatar.png' %} {% endif %}"
+                                         class="img-circle" height="60" width="60">
+                                </div>
+                                <div class="col-md-10 col-sm-10 col-xs-9">
+                                    <h5>{{ review.user.username }}</h5>
+                                    <p>{{ review.content }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12"><p class="pull-right">{{ review.create_time|timesince }} ago</p>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        {% if reviews.has_other_pages %}
+                            <ul class="pagination">
+                                {% if reviews.has_previous %}
+                                    <li class="page-item">
+                                        <a href="?page={{ reviews.previous_page_number }}" class="page-link">&laquo;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a href="" class="page-link">&laquo;</a>
+                                    </li>
+                                {% endif %}
+                                {% for i in reviews.paginator.page_range %}
+                                    {% if reviews.number == i %}
+                                        <li class="page-item active">
+                                            <a class="page-link">{{ i }}</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if reviews.has_next %}
+                                    <li class="page-item">
+                                        <a href="?page={{ reviews.next_page_number }}" class="page-link">&raquo;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a href="" class="page-link">&raquo;</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <img src="{{ article.user.profile.avatar.url }}" alt="" class="img-circle center-block" height="100"
+                         width="100">
+                    <a href="{% url 'profile' article.user.username %}"><h4 class="text-center">{{ article.user.username }}</h4>
+                    </a>
+                    <hr/>
+                    <p>{{ article.user.profile.about|safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
