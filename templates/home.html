@@ -23,11 +23,11 @@
                         <a class="section__link" href="{% url 'article-detail' article.id %}"><img
                                 src="{{ article.photo.url }}"
                                 alt=""
-                                class="section__link__img"></a>
+                                class="img-responsive center-block"></a>
                         <div class="section__text">
                             <h3 class="text-center"><a
                                     href="{% url 'article-detail' article.id %}">{{ article.title }}</a></h3>
-                            <p class="text-left">{{ article.description|truncatewords:30|safe }}</p>
+                            <p class="text-left">{{ article.description|truncatewords:15|safe }}</p>
                             <p class="text-right">
                                 by <a href="{% url 'profile' article.user.username %}">{{ article.user.username }} </a>
                             </p>
