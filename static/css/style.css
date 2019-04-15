@@ -176,3 +176,36 @@ a {
     margin-left: 30px;
 
 }
+
+
+/*.profile__articles{*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    justify-content: space-between;*/
+/*    align-items: flex-start;*/
+/*}*/
+
+
+/*.profile__article__item__cnt{*/
+/*    padding: 10px;*/
+/*}*/
+
+/*.profile__article__item__cnt{*/
+/*    margin: auto 0 0 0;*/
+/*}*/
+.profile__article__item__img{
+    height: 150px !important;
+
+}
+
+@media (max-width: 990px) {
+    .profile__article__item__img {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile__article__item__img {
+        height: auto !important;
+    }
+}

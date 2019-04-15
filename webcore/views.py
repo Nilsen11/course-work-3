@@ -225,5 +225,20 @@ def delete_article(request, id):
     return redirect('my-articles')
 
 
+def NOD(a, b):
+    if a * b == 0:
+        return a + b
+    else:
+        return NOD(a % b, b % a)
+
+
 def test(request):
-    return render(request, 'test.html', {})
+    context = {
+        "temp": {"1": NOD(1, 10),
+                 "2": NOD(5, 10),
+                 "3": NOD(24, 24),
+                 "4": NOD(0, 0),
+                 "5": NOD(5, 10), }
+
+    }
+    return render(request, 'test.html', context)
